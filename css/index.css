@@ -1,0 +1,41 @@
+.letter{
+    position:relative;
+    float: left;
+    /*display:flex;*/
+    /*left:10%;*/
+    top:-10%;
+    font-size: 400%;
+    animation: 5s infinite ease-in;
+    animation-name:move;
+}
+
+body{
+    overflow: hidden;
+}
+/*.letter:hover{*/
+/*top:700px;*/
+/*}*/
+
+.hidden{
+    visibility: hidden;
+}
+
+#cont{
+    position: absolute;
+    /*display: flex;*/
+    /*float:left;*/
+    height: 100%;
+    overflow:hidden;
+}
+
+.delay{
+    animation-delay: 2s;
+}
+
+@keyframes move {
+
+    100%{
+        top:90%;
+    }
+}
+

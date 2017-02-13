@@ -1,0 +1,161 @@
+/**
+ * Created by mrbloom on 23.01.2017.
+ */
+// event.type должен быть keypress
+let letters=[];
+let num_letters = 0;
+let counter = 0;
+let letter_delay = 2000;
+let node_map = {};
+let hidden_class = "hidden";
+let red_number = 0;
+let red_color = "crimson";
+let cont_id = "cont";
+
+whichUA={
+    81 : "й"
+    , 87 : "ц"
+    , 69 : "у"
+    , 82 : "к"
+    , 84 : "е"
+    , 89 : "н"
+    , 85 : "г"
+    , 73 : "ш"
+    , 79 : "щ"
+    , 80 : "з"
+    , 219 : "х"
+    , 221 : "ї"
+    , 65 : "ф"
+    , 83 : "і"
+    , 68 : "в"
+    , 70 : "а"
+    , 71 : "п"
+    , 72 : "р"
+    , 74 : "о"
+    , 75 : "л"
+    , 76 : "д"
+    , 186 : "ж"
+    , 222 : "є"
+    , 90 : "я"
+    , 88 : "ч"
+    , 67 : "с"
+    , 86 : "м"
+    , 66 : "и"
+    , 78 : "т"
+    , 77 : "ь"
+    , 188 : "б"
+    , 190 : "ю"
+};
+
+whichEN = {
+      81 : "q"
+    , 87 : "w"
+    , 69 : "e"
+    , 82 : "r"
+    , 84 : "t"
+    , 89 : "y"
+    , 85 : "u"
+    , 73 : "i"
+    , 79 : "o"
+    , 80 : "p"
+    , 219 : "["
+    , 221 : "]"
+    , 65 : "a"
+    , 83 : "s"
+    , 68 : "d"
+    , 70 : "f"
+    , 71 : "g"
+    , 72 : "h"
+    , 74 : "j"
+    , 75 : "k"
+    , 76 : "l"
+    , 186 : ";"
+    , 222 : "'"
+    , 90 : "z"
+    , 88 : "x"
+    , 67 : "c"
+    , 86 : "v"
+    , 66 : "b"
+    , 78 : "n"
+    , 77 : "m"
+    , 188 : ","
+    , 190 : "."
+};
+
+function nodes2map(nodes){
+    map={};
+    nodes.forEach(function (node){
+        map[node.innerHTML]=node
+
+    });
+    return map;
+}
+
+function randomRange(min, max) {
+    if(!min)
+        return Math.random();
+    if(!max)
+        return Math.random() * min;
+    return Math.random() * (max - min) + min;
+}
+
+
+window.onload = function init(){
+    letters = document.querySelectorAll(".letter");
+    num_letters = letters.length;
+    node_map = nodes2map(letters);
+    letters[red_number].style.color = red_color;
+    red_number++;
+
+    letters.forEach(function (letter){
+        letter.remove()
+    });
+
+    //console.log(window.innerHeight);
+};
+
+let timer = window.setInterval(function(){
+    let cont = document.getElementById(cont_id);
+    if(counter<num_letters) {
+        letters[counter].classList.toggle(hidden_class);
+        cont.appendChild(letters[counter]);
+        counter++;
+    }else {
+
+        window.clearInterval(timer);
+    }
+},letter_delay,letters);
+
+document.onkeydown = function(event){
+    let code = event.which || event.keyCode;
+
+    function hide_red(ch){
+        if(ch in node_map){
+            //console.log(ch)
+            //console.log(node_map[ch])
+            if (!node_map[ch].classList.contains(hidden_class) && (node_map[ch].style.color == red_color) ){
+                node_map[ch].classList.add(hidden_class);
+
+                if(red_number<num_letters){
+                    letters[red_number].style.color = red_color;
+                    red_number++;
+                }
+            }
+        }
+    }
+
+    function proccess_lang(which){
+        let ch = which[code];
+        try {
+            hide_red(ch);
+            let CH = ch.toUpperCase();
+            hide_red(CH);
+        }
+        catch(err){
+            console.error(err);
+        }
+    }
+
+    proccess_lang(whichUA);
+    proccess_lang(whichEN);
+};
