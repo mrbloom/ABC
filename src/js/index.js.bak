@@ -1,6 +1,8 @@
+﻿
+
 /**
  * Created by mrbloom on 23.01.2017.
- */
+ **/
 // event.type должен быть keypress
 let letters=[];
 let num_letters = 0;
@@ -12,7 +14,7 @@ let red_number = 0;
 let red_color = "crimson";
 let cont_id = "cont";
 
-whichUA={
+let whichUA={
     81 : "й"
     , 87 : "ц"
     , 69 : "у"
@@ -47,7 +49,7 @@ whichUA={
     , 190 : "ю"
 };
 
-whichEN = {
+let whichEN = {
       81 : "q"
     , 87 : "w"
     , 69 : "e"
@@ -82,6 +84,20 @@ whichEN = {
     , 190 : "."
 };
 
+let whichNUM = {
+    49 : "1",
+    50 : "2",
+    51 : "3",
+    52 : "4",
+    53 : "5",
+    54 : "6",
+    55 : "7",
+    56 : "8",
+    57 : "9",
+    48 : "0"
+};
+
+
 function nodes2map(nodes){
     map={};
     nodes.forEach(function (node){
@@ -91,26 +107,37 @@ function nodes2map(nodes){
     return map;
 }
 
-function randomRange(min, max) {
-    if(!min)
-        return Math.random();
-    if(!max)
-        return Math.random() * min;
-    return Math.random() * (max - min) + min;
+function shuffle(div_list){
+    var arr = Array.prototype.slice.call(div_list);
+    arr.forEach(function(e,i,a){
+        let j = Math.floor(Math.random() * i);
+        [a[i], a[j]] = [a[j], a[i]];
+    });
+    print_nodes(arr);
+    return arr;
 }
 
+function print_nodes(arr){
+    let txt = "[";
+    for (let i=0; i<arr.length; i++){
+        txt += arr[i].innerHTML + ",";
+    }
+    txt += "]";
+    console.log(txt)
+}
 
-window.onload = function init(){
+window.onload = function(){
     letters = document.querySelectorAll(".letter");
     num_letters = letters.length;
     node_map = nodes2map(letters);
-    letters[red_number].style.color = red_color;
-    red_number++;
 
     letters.forEach(function (letter){
         letter.remove()
     });
 
+    letters = shuffle(letters);
+    letters[red_number].style.color = red_color;
+    red_number++;
     //console.log(window.innerHeight);
 };
 
@@ -121,7 +148,6 @@ let timer = window.setInterval(function(){
         cont.appendChild(letters[counter]);
         counter++;
     }else {
-
         window.clearInterval(timer);
     }
 },letter_delay,letters);
@@ -158,4 +184,5 @@ document.onkeydown = function(event){
 
     proccess_lang(whichUA);
     proccess_lang(whichEN);
+    proccess_lang(whichNUM);
 };
